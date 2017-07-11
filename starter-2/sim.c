@@ -31,37 +31,6 @@ void (*init_fcn)() = NULL;
 void (*ref_fcn)(pgtbl_entry_t *) = NULL;
 int (*evict_fcn)() = NULL;
 
-/* 
- * For verification of correct version number at end of trace 
- */
-void verify_page_versions(FILE *vfp)
-{
-	char buf[MAXLINE];
-	addr_t vaddr = 0;
-	int expected_version;
-	char *memptr;
-	int *versionptr;
-	int error_count = 0;
-
-	while(fgets(buf, MAXLINE, vfp) != NULL) {
-		sscanf(buf, "%d %lx", &expected_version, &vaddr);
-		// Request each page with "read" access - 'L'oad
-		memptr = find_physpage(vaddr, 'L');		
-		versionptr = (int *)memptr;
-		addr_t *checkaddr = (addr_t *)(memptr + sizeof(int));
-
-		if (*checkaddr != vaddr) {
-			fprintf(stderr,"Error, virtual address 0x%lx not stored in page.\n",vaddr);
-		}
-		if (*versionptr != expected_version) {
-			fprintf(stderr,"Error, virtual page 0x%lx has version %d, expected %d\n",vaddr, *versionptr, expected_version);
-			error_count++;
-		}
-	}
-
-	fprintf(stderr,"You have %d errors in version numbers.\n",error_count);
-
-}
 
 /* An actual memory access based on the vaddr from the trace file.
  *
@@ -118,12 +87,10 @@ int main(int argc, char *argv[]) {
 	int opt;
 	unsigned swapsize;
 	FILE *tfp = stdin;
-	char *verification_filename = NULL;
-	FILE *verify_fp = NULL;
 	char *replacement_alg = NULL;
 	char *usage = "USAGE: sim -f tracefile -m memorysize -s swapsize -a algorithm\n";
 
-	while ((opt = getopt(argc, argv, "f:m:a:s:v:")) != -1) {
+	while ((opt = getopt(argc, argv, "f:m:a:s:")) != -1) {
 		switch (opt) {
 		case 'f':
 			tracefile = optarg;
@@ -137,9 +104,6 @@ int main(int argc, char *argv[]) {
 		case 's':
 			swapsize = (unsigned)strtoul(optarg, NULL, 10);
 			break;
-		case 'v':
-			verification_filename = optarg;
-			break;
 		default:
 			fprintf(stderr, "%s", usage);
 			exit(1);
@@ -152,14 +116,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	// If verification requested, make sure we can open file
-	if(verification_filename != NULL) {
-		if ((verify_fp = fopen(verification_filename, "r")) == NULL) {
-			perror("Error opening verification file:");
-			exit(1);
-		}
-	}
-
+	// Initialize main data structures for simulation.
 	// This happens before calling the replacement algorithm init function
 	// so that the init_fcn can refer to the coremap if needed.
 	coremap = malloc(memsize * sizeof(struct frame));
@@ -191,14 +148,7 @@ int main(int argc, char *argv[]) {
 	init_fcn();
 
 	replay_trace(tfp);
-
-	// If a verification file was provided, check the version numbers on
-	// all virtual pages in the trace. 
-	if (verify_fp != NULL) {
-		verify_page_versions(verify_fp);
-	} 
-
-	//	print_pagedirectory();
+	print_pagedirectory();
 
 	// Cleanup - removes temporary swapfile.
 	swap_destroy();
