@@ -178,7 +178,7 @@ char *find_physpage(addr_t vaddr, char type) {
     {
         int frame=allocate_frame(p);
         p->frame=frame<<PAGE_SHIFT;
-        init_frame(p->frame,vaddr);
+        init_frame(frame,vaddr);
         //set it dirty cause it's the first time
         p->frame|=PG_DIRTY;
         p->frame|=PG_VALID;
