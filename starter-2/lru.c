@@ -4,9 +4,9 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "pagetable.h"
-
-
+ 
 extern int memsize;
 
 extern int debug;
@@ -74,7 +74,7 @@ void lru_ref(pgtbl_entry_t *p) {
         prev=NULL;
         while (lru_current->frame!=frame) {
             prev=lru_current;
-//            lru_current=lru_current->next;
+            lru_current=lru_current->next;
         }
         
         if (prev!=NULL) {

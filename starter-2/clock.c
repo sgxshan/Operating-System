@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "pagetable.h"
 
 
@@ -47,6 +48,6 @@ void clock_ref(pgtbl_entry_t *p) {
  */
 void clock_init() {
     clock_pointer=0;
-    clock_refed=(bool*)malloc(sizeof(bool)*memsize);
-    memset(clock_ref, 0, sizeof(bool) * memsize);
+    clock_refed=malloc(sizeof(bool)*memsize);
+    memset(clock_refed, 0, sizeof(bool) * memsize);
 }
