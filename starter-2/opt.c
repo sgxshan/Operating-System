@@ -39,8 +39,8 @@ int opt_evict() {
     
     int longest_distance=-1;
     int longest_frame=-1;
-    
-    for (int i=0; i<memsize; i++) {
+    int i;    
+    for (i=0; i<memsize; i++) {
         addr_t target_addr=coremap[i].vaddr;
         llnode *p=(llnode*)malloc(sizeof(llnode));
         p=opt_current;
