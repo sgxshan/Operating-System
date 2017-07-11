@@ -99,7 +99,7 @@ void opt_init() {
     opt_head=NULL;
     opt_current=NULL;
     
-    while (fget(buf,MAXLINE,fp)!=NULL) {
+    while (fgets(buf,MAXLINE,fp)!=NULL) {
         if(buf[0]!='=')
         {
             sscanf(buf,"%c %lx",&type,&vaddr);
