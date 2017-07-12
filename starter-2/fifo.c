@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <string.h>
 #include "pagetable.h"
 
 
@@ -13,14 +14,26 @@ extern int debug;
 extern struct frame *coremap;
 
 int pointer;
+
+//typedef struct llnode_t
+//{
+//    int frame;
+//    
+//    struct llnode_t* next;
+//}llnode;
+//
+//llnode* fifo_head;
+//llnode* fifo_tail;
+//bool* fifo_refed;
+
 /* Page to evict is chosen using the fifo algorithm.
  * Returns the page frame number (which is also the index in the coremap)
  * for the page that is to be evicted.
  */
 int fifo_evict() {
-    int rn=pointer;
+    int return_frame=pointer;
     pointer=(pointer+1)%memsize;
-	return rn;
+	return return_frame;
 }
 
 /* This function is called on each access to a page to update any information
@@ -28,13 +41,13 @@ int fifo_evict() {
  * Input: The page table entry for the page that is being accessed.
  */
 void fifo_ref(pgtbl_entry_t *p) {
-
-	return;
+    
 }
 
 /* Initialize any data structures needed for this 
  * replacement algorithm 
  */
 void fifo_init() {
+    
     pointer=0;
 }

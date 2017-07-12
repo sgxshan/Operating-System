@@ -24,7 +24,7 @@ bool* clock_refed;
 int clock_pointer;
 
 int clock_evict() {
-    
+    //when the frame refered as 1, change it to 0 and move to next frame
 	while(clock_refed[clock_pointer]==1)
     {
         clock_refed[clock_pointer]=0;
@@ -39,6 +39,7 @@ int clock_evict() {
  */
 void clock_ref(pgtbl_entry_t *p) {
 
+    //shift to remove offset cause we only need frame number to mark the page
     clock_refed[p->frame>>PAGE_SHIFT]=1;
 	return;
 }

@@ -50,7 +50,6 @@ int allocate_frame(pgtbl_entry_t *p) {
         if(coremap[frame].pte->frame&PG_DIRTY)
         {
             int new_swap_offset=swap_pageout(frame,coremap[frame].pte->swap_off);
-            //assert
             //set invalid, onswap
             coremap[frame].pte->frame&=~PG_VALID;
             //record new offset

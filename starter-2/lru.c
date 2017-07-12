@@ -55,16 +55,20 @@ void lru_ref(pgtbl_entry_t *p) {
     new_node->frame=frame;
     new_node->next=NULL;
     
+    //if there is no list exist
     if(lru_tail==NULL)
     {
         lru_tail=new_node;
         lru_head=new_node;
     }
+    //if the page has not been referenced yet
     else if(lru_refed[frame]==0)
     {
         lru_tail->next=new_node;
         lru_tail=new_node;
-    }else
+    }
+    //if the page has been referenced, move it from the list to the end of list
+    else
     {
         lru_tail->next=new_node;
         lru_tail=new_node;

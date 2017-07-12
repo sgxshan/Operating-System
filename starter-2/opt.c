@@ -31,7 +31,7 @@ llnode* opt_current;
 int* opt_distance;
 int count;
 
-//our strategy is to traverse the list from current node, calculate the distance of each
+//the strategy is to traverse the list from current node, calculate the distance of each
 //physical memory frame, choose the frame that have longest distance which means it will not
 //be used in longest time
 
