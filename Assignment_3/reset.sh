@@ -1,0 +1,11 @@
+cp img/twolevel.img.bk img/twolevel.img
+cp img/onefile.img.bk img/onefile.img
+cp img/onedirectory.img.bk img/onedirectory.img
+cp img/emptydisk.img.bk img/emptydisk.img
+cp img/deletedfile.img.bk img/deletedfile.img
+cp img/deleteddirectory.img.bk img/deleteddirectory.img
+cp img/hardlink.img.bk img/hardlink.img
+cp img/largefile.img.bk img/largefile.img
+cp img/test1.img.bk img/test1.img
+cp img/test2.img.bk img/test2.img
+cp img/test3.img.bk img/test3.img
